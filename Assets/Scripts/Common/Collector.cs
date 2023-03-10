@@ -1,37 +1,42 @@
+using Behavior;
+using GameplayEntities.Interface;
 using System;
 using UnityEngine;
 
-public class Collector : MonoBehaviour, ICollectorTransform
+namespace Common
 {
-    [SerializeField] private Transform _holder;
-    [SerializeField] private float _jumpPower;
-    [SerializeField] private float _collectingDuration;
-    [SerializeField] private int _transformsCount;
-
-    private ITransfer _transfer;
-
-    public event Action<ICollectableTransform> CollectableCollected;
-
-    private void Awake()
+    public class Collector : MonoBehaviour, ICollectorTransform
     {
-        _transfer = new JumpingToTarget(_holder, _jumpPower, _collectingDuration);
-    }
+        [SerializeField] private Transform _holder;
+        [SerializeField] private float _jumpPower;
+        [SerializeField] private float _collectingDuration;
+        [SerializeField] private int _transformsCount;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.TryGetComponent(out ICollectableTransform collectableTransform))
-            Collect(collectableTransform);
-    }
+        private ITransfer _transfer;
 
-    private void Collect(ICollectableTransform collectable)
-    {
-        if (collectable.IsCollected) return;
+        public event Action<ICollectableTransform> CollectableCollected;
 
-        _transformsCount++;
+        private void Awake()
+        {
+            _transfer = new JumpingToTarget(_holder, _jumpPower, _collectingDuration);
+        }
 
-        _transfer.Transfer(collectable);
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.TryGetComponent(out ICollectableTransform collectableTransform))
+                Collect(collectableTransform);
+        }
 
-        collectable.BeCollected();
-        CollectableCollected?.Invoke(collectable);
+        private void Collect(ICollectableTransform collectable)
+        {
+            if (collectable.IsCollected) return;
+
+            _transformsCount++;
+
+            _transfer.Transfer(collectable);
+
+            collectable.BeCollected();
+            CollectableCollected?.Invoke(collectable);
+        }
     }
 }

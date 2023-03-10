@@ -1,40 +1,45 @@
+using GameplayEntities.Box;
+using Infrastructure.Factory;
 using UnityEngine;
 
-public class BoxPool : IObjectPool<Box>
+namespace Pool
 {
-    private readonly Transform _container;
-    private readonly IObjectFactory<ITransformable> _factory;
-    private readonly IObjectPool<Box> _pool;
-
-    public BoxPool(IObjectFactory<ITransformable> factory, uint initialCount, Transform container)
+    public class BoxPool : IObjectPool<Box>
     {
-        _factory = factory;
-        _pool = new ObjectPool<Box>(Create, OnDestroyed, OnGot, OnRelaesed);
-        _container = container;
+        private readonly Transform _container;
+        private readonly IObjectFactory<Box> _factory;
+        private readonly IObjectPool<Box> _pool;
 
-        for (int i = 0; i < initialCount; i++)
-            _pool.Release(Create());
-    }
+        public BoxPool(IObjectFactory<Box> factory, uint initialCount, Transform container)
+        {
+            _factory = factory;
+            _pool = new ObjectPool<Box>(Create, OnDestroyed, OnGot, OnRelaesed);
+            _container = container;
 
-    public Box Get() => _pool.Get();
+            for (int i = 0; i < initialCount; i++)
+                _pool.Release(Create());
+        }
 
-    public void Release(Box box) => _pool.Release(box);
+        public Box Get() => _pool.Get();
 
-    private Box Create() => (Box) _factory.CreateBox();
+        public void Release(Box box) => _pool.Release(box);
 
-    private void OnDestroyed(Box box)
-    {
-        Object.Destroy(box);
-    }
+        private Box Create() => _factory.CreateBox();
 
-    private void OnRelaesed(Box box)
-    {
-        box.transform.SetParent(_container);
-        box.gameObject.SetActive(false);
-    }
+        private void OnDestroyed(Box box)
+        {
+            Object.Destroy(box);
+        }
 
-    private void OnGot(Box box)
-    {
+        private void OnRelaesed(Box box)
+        {
+            box.transform.SetParent(_container);
+            box.gameObject.SetActive(false);
+        }
 
+        private void OnGot(Box box)
+        {
+
+        }
     }
 }

@@ -1,41 +1,46 @@
-﻿using System;
+﻿using Service.Input;
+using Service.UnityContext;
+using System;
 using UnityEngine;
 
-public class SimpleMovement : IMoveable, IUpdateable, IDisposable
+namespace Behavior
 {
-    private readonly PlayerInputRouter _input;
-    private readonly float _speed;
-    private float _deltaTime;
-    private Vector3 _motion;
-    private CharacterController _characterController;
-    private UpdateProvider _updateProvider;
-    
-    public SimpleMovement(PlayerInputRouter input, float speed, CharacterController characterController, UpdateProvider updateProvider)
+    public class SimpleMovement : IMoveable, IUpdateable, IDisposable
     {
-        _input = input;
-        _speed = speed;
-        _characterController = characterController;
-        _updateProvider = updateProvider;
+        private readonly IInputService _input;
+        private readonly float _speed;
+        private float _deltaTime;
+        private Vector3 _motion;
+        private CharacterController _characterController;
+        private UnityUpdater _unityUpdater;
 
-        _updateProvider.AddUpdateables(this);
-    }
+        public SimpleMovement(IInputService input, float speed, CharacterController characterController, UnityUpdater unityUpdater)
+        {
+            _input = input;
+            _speed = speed;
+            _characterController = characterController;
+            _unityUpdater = unityUpdater;
 
-    public Vector3 Direction { get; set; }
+            _unityUpdater.AddUpdateables(this);
+        }
 
-    public void Move()
-    {
-        Direction = new Vector3(_input.Value.x, Direction.y, _input.Value.y);
-        _motion = _speed * _deltaTime * Direction;
-        _characterController.Move(_motion);
-    }
+        public Vector3 Direction { get; set; }
 
-    public void Update(float deltaTime)
-    {
-        _deltaTime = deltaTime;
-    }
+        public void Move()
+        {
+            Direction = new Vector3(_input.Movement.x, Direction.y, _input.Movement.y);
+            _motion = _speed * _deltaTime * Direction;
+            _characterController.Move(_motion);
+        }
 
-    public void Dispose()
-    {
-        _updateProvider.RemoveUpdateable(this);
+        public void Update(float deltaTime)
+        {
+            _deltaTime = deltaTime;
+        }
+
+        public void Dispose()
+        {
+            _unityUpdater.RemoveUpdateable(this);
+        }
     }
 }

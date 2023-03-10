@@ -1,6 +1,9 @@
-﻿public class ZeroGravity : IGravity
+﻿namespace Behavior
 {
-    public float Value { get; set; } = 0;
+    public class ZeroGravity : IGravity
+    {
+        public float Value { get; set; } = 0;
 
-    public void ApplyGravity() { }
+        public void ApplyGravity() { }
+    }
 }

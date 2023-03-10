@@ -1,4 +1,7 @@
-﻿public class NoRotation : IRotator
+﻿namespace Behavior
 {
-    public void Rotate() { }
+    public class NoRotation : IRotator
+    {
+        public void Rotate() { }
+    }
 }

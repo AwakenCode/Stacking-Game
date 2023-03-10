@@ -9,9 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b563c37b37d64713aaf49dbdba319155, type: 3}
+  m_Script: {fileID: 0}
   m_Name: SingletonAsset
   m_EditorClassIdentifier: 
-  _initialized: 0
-  singletons:
-  - {fileID: 11400000}
