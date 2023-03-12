@@ -2,8 +2,11 @@
 using System;
 using System.Collections.Generic;
 
-public interface ICollectablesReceiver
+namespace Common.Interface
 {
-    event Action CollectorTriggered;
-    void ReceiveCollectables(Stack<ICollectableTransform> collectables);
+    public interface ICollectablesReceiver
+    {
+        event Action CollectorTriggered;
+        void ReceiveCollectables(Stack<ICollectableTransform> collectables);
+    }
 }

@@ -1,4 +1,4 @@
-using Behavior;
+using Common.Interface;
 using GameplayEntities.Interface;
 using System;
 using UnityEngine;
@@ -18,7 +18,7 @@ namespace Common
 
         private void Awake()
         {
-            _transfer = new JumpingToTarget(_holder, _jumpPower, _collectingDuration);
+            _transfer = TransferFactory.CreateJumpTransfer(_holder, _jumpPower, _collectingDuration);
         }
 
         private void OnTriggerEnter(Collider other)

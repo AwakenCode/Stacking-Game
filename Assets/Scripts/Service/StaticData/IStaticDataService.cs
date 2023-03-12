@@ -7,5 +7,7 @@ namespace Service.StaticData
         void Load();
         PlayerData GetPlayerData();
         FactoryData GetFactoryData();
+        PoolData GetPoolData();
+        StackData GetStackData();
     }
 }

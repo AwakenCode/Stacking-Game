@@ -2,6 +2,7 @@
 using DG.Tweening;
 using System;
 using GameplayEntities.Interface;
+using Common.Interface;
 
 namespace Behavior
 {
@@ -12,9 +13,9 @@ namespace Behavior
         private readonly int _jumpCount;
         private readonly float _transferDuration;
 
-        public JumpingToTarget(Transform parent = null, float jumpPower = 2, float transferDuration = 0.5f, uint jumpCount = 1)
+        public JumpingToTarget(Transform targetParent = null, float jumpPower = 2, float transferDuration = 0.5f, uint jumpCount = 1)
         {
-            _holder = parent;
+            _holder = targetParent;
             _jumpPower = jumpPower;
             _jumpCount = (int)jumpCount;
             _transferDuration = transferDuration;

@@ -1,15 +1,13 @@
 using GameplayEntities.Interface;
-using Spawner;
 using UnityEngine;
 
 namespace GameplayEntities.Box
 {
     [RequireComponent(typeof(Collider), typeof(Rigidbody))]
-    public class Box : MonoBehaviour, ICollectableTransform, IObjectOfSpawn, IPhysicObject
+    public class Box : MonoBehaviour, ICollectableTransform, IPhysicObject
     {
         private Collider _collider;
         private Rigidbody _rigidbody;
-        private IPhysicObject _physicObject => this;
 
         public bool IsCollected { get; private set; } = false;
         public Collider Collider => _collider;
@@ -20,12 +18,6 @@ namespace GameplayEntities.Box
         {
             _collider = GetComponent<Collider>();
             _rigidbody = GetComponent<Rigidbody>();
-        }
-
-        public void BeSpawned()
-        {
-            _physicObject.Enable();
-            gameObject.SetActive(true);
         }
 
         public void BeCollected()

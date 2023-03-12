@@ -7,6 +7,7 @@ using Service.StaticData;
 using Service.Asset;
 using Infrastructure.Boot;
 using Service.UnityContext;
+using Pool;
 
 namespace Infrastructure.States
 {
@@ -28,7 +29,7 @@ namespace Infrastructure.States
             _services = services;
             _unityUpdater = unityUpdater;
             _coroutineRunner = coroutineRunner;
-
+            
             RegisterServices();
         }
 
@@ -42,21 +43,22 @@ namespace Infrastructure.States
         private void RegisterServices()
         {
             _services.Register<UnityUpdater>(_unityUpdater);
-            _services.Register<UnityInstantiater>(new UnityInstantiater());
             _services.Register<IGameStateMachine>(_gameStateMachine);
             _services.Register<ICoroutineRunner>(_coroutineRunner);
             _services.Register<IPlayerProgressService>(new PlayerProgressService());
             _services.Register<IInputService>(new PlayerInputRouter(_services.Resolve<UnityUpdater>()));
-
+            
             RegisterAssetProvider();
             RegisterStaticData();
             RegisterPlayerBehaviorFactory();
             RegisterGameFactory();
+
+            _services.Register<BoxPool>(new BoxPool(_services.Resolve<IGameFactory>()));
         }
 
         private void RegisterAssetProvider()
         {
-            AssetProvider assetProvider = new AssetProvider(_services.Resolve<UnityInstantiater>());
+            AssetProvider assetProvider = new AssetProvider();
             _services.Register<IAssetProvider>(assetProvider);
             assetProvider.Load();
         }

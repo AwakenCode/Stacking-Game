@@ -25,10 +25,7 @@ namespace Infrastructure.States.StateMachine
                 [typeof(LoadProgressState)] = new LoadProgressState(this, sceneLoader, 
                     services.Resolve<IPlayerProgressService>()
                 ),
-                [typeof(LoadLevelState)] = new LoadLevelState(this, loadingCurtain, sceneLoader,
-                    services.Resolve<IPlayerProgressService>(), 
-                    services.Resolve<IGameFactory>()
-                ), 
+                [typeof(LoadLevelState)] = new LoadLevelState(this, loadingCurtain, sceneLoader, services), 
                 [typeof(GameLoopState)] = new GameLoopState(),
             };
         }

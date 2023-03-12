@@ -1,12 +1,15 @@
 ﻿using GameplayEntities.Interface;
 using System;
 
-public interface ICollector
+namespace Common.Interface
 {
-    void Collect(ICollectable collectable) => collectable.BeCollected();
-}
+    public interface ICollector
+    {
+        void Collect(ICollectable collectable) => collectable.BeCollected();
+    }
 
-public interface ICollectorTransform : ICollector
-{
-    event Action<ICollectableTransform> CollectableCollected;
+    public interface ICollectorTransform : ICollector
+    {
+        event Action<ICollectableTransform> CollectableCollected;
+    }
 }

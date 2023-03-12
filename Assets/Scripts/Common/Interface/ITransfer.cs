@@ -1,7 +1,10 @@
 ﻿using GameplayEntities.Interface;
 using System;
 
-public interface ITransfer
+namespace Common.Interface
 {
-    void Transfer(ITransformable collectableTransform, Action onComplete = null);
+    public interface ITransfer
+    {
+        void Transfer(ITransformable collectableTransform, Action onComplete = null);
+    }
 }

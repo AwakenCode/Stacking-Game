@@ -14,12 +14,12 @@ namespace Infrastructure.Boot
             _coroutineRunner = coroutineRunner;
         }
 
-        public void Load(string name, Action onLoaded)
+        public void Load(string name, Action onLoaded = null)
         {
             _coroutineRunner.StartCoroutine(LoadScene(name, onLoaded));
         }
 
-        private IEnumerator LoadScene(string target, Action onLoaded = null)
+        private IEnumerator LoadScene(string target, Action onLoaded)
         {
             if(SceneManager.GetActiveScene().name == target)
             {

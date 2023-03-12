@@ -1,4 +1,8 @@
 ﻿using Character;
+using Common;
+using Common.Interface;
+using GameplayEntities.Box;
+using Pool;
 using Service.Asset;
 using Service.Input;
 using Service.StaticData;
@@ -14,8 +18,6 @@ namespace Infrastructure.Factory
         private readonly IInputService _inputService;
         private readonly IBehaviorFactory _behaviorFactory;
 
-        private Player _player;
-
         public GameFactory(IAssetProvider assetProvider, IStaticDataService staticDataService, UnityUpdater unityUpdater,
             IInputService input, IBehaviorFactory behaviorFactory)
         {
@@ -28,18 +30,35 @@ namespace Infrastructure.Factory
 
         public Player CreatePlayer()
         {
-            _player = _assetProvider.Instantiate(AssetPath.Player, _staticDataService.GetPlayerData().Position)
+            Player player = _assetProvider.Instantiate(AssetPath.Player, _staticDataService.GetPlayerData().Position)
                 .GetComponent<Player>();
 
-            _behaviorFactory.Init(_player);
+            Inventory inventory = CreateInventory(player.CollectorTransform);
+            player.Inventory = inventory;
 
-            _player.SetMovement(new PlayerMovement(_unityUpdater, _inputService));
-            _player.PlayerMovement.SetMovable(_behaviorFactory.CreateSimpleMovement());
-            _player.PlayerMovement.SetRotator(_behaviorFactory.CreateSimpleRotator());
-            _player.PlayerMovement.SetGravity(_behaviorFactory.CreateSimpleGravity());
-            _player.PlayerMovement.SetJump(_behaviorFactory.CreateSimpleJump());
+            _behaviorFactory.Init(player);
 
-            return _player;
+            player.PlayerMovement = new PlayerMovement(_unityUpdater, _inputService);
+            player.PlayerMovement.SetMovable(_behaviorFactory.CreateSimpleMovement());
+            player.PlayerMovement.SetRotator(_behaviorFactory.CreateSimpleRotator());
+            player.PlayerMovement.SetGravity(_behaviorFactory.CreateSimpleGravity());
+            player.PlayerMovement.SetJump(_behaviorFactory.CreateSimpleJump());
+
+            return player;
         }
+
+        public Box CreateBox() => _assetProvider.Instantiate(AssetPath.Box).GetComponent<Box>();
+
+        public PoolContainers CreatePoolContainers() 
+            => _assetProvider.Instantiate(AssetPath.PoolContainers).GetComponent<PoolContainers>();
+
+        public CollectablesReceiver CreateCollectablesReceiver() => 
+            _assetProvider.Instantiate(
+                AssetPath.CollectablesReceiver, 
+                _staticDataService.GetStackData().Position
+            ).GetComponent<CollectablesReceiver>();
+
+        public Inventory CreateInventory(ICollectorTransform collector) 
+            => new Inventory(collector);
     }
 }

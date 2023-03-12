@@ -1,19 +1,25 @@
 using GameplayEntities.Box;
 using Infrastructure.Factory;
+using Service;
 using UnityEngine;
 
 namespace Pool
 {
-    public class BoxPool : IObjectPool<Box>
+    public class BoxPool : IObjectPool<Box>, IService
     {
-        private readonly Transform _container;
-        private readonly IObjectFactory<Box> _factory;
+        private readonly IGameFactory _factory;
         private readonly IObjectPool<Box> _pool;
 
-        public BoxPool(IObjectFactory<Box> factory, uint initialCount, Transform container)
+        private Transform _container;
+
+        public BoxPool(IGameFactory factory)
         {
             _factory = factory;
             _pool = new ObjectPool<Box>(Create, OnDestroyed, OnGot, OnRelaesed);
+        }
+
+        public void Init(Transform container, uint initialCount) 
+        { 
             _container = container;
 
             for (int i = 0; i < initialCount; i++)
@@ -37,9 +43,6 @@ namespace Pool
             box.gameObject.SetActive(false);
         }
 
-        private void OnGot(Box box)
-        {
-
-        }
+        private void OnGot(Box box) { }
     }
 }

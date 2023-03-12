@@ -1,38 +1,29 @@
-﻿using Service.UnityContext;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Service.Asset
 {
     public class AssetProvider : IAssetProvider
     {
-        private UnityInstantiater _unityInstantiater;
-        private Dictionary<string, GameObject> _source = new Dictionary<string, GameObject>();
-
-        public AssetProvider(UnityInstantiater unityInstantiater)
-        {
-            _unityInstantiater = unityInstantiater;
-        }
+        private Dictionary<string, GameObject> _source;
 
         public void Load()
         {
-            GameObject player = Resources.Load<GameObject>(AssetPath.Player);
-            _source.Add(AssetPath.Player, player);
+            _source = new Dictionary<string, GameObject>()
+            {
+                { AssetPath.Player, Resources.Load<GameObject>(AssetPath.Player) },
+                { AssetPath.Box,  Resources.Load<GameObject>(AssetPath.Box) },
+                { AssetPath.PoolContainers, Resources.Load<GameObject>(AssetPath.PoolContainers) },
+                { AssetPath.CollectablesReceiver, Resources.Load<GameObject>(AssetPath.CollectablesReceiver) }
+            };
         }
 
-        public GameObject Instantiate(string path)
-        {
-            return _unityInstantiater.Instantiate(_source[path]);
-        }
+        public GameObject Instantiate(string path) => Object.Instantiate(_source[path]);
 
-        public GameObject Instantiate(string path, Vector3 position)
-        {
-            return _unityInstantiater.Instantiate(_source[path], position);
-        }
+        public GameObject Instantiate(string path, Vector3 position) =>
+            Object.Instantiate(_source[path], position, Quaternion.identity);
 
-        public GameObject Instantiate(string path, Vector3 position, Transform parent)
-        {
-            return _unityInstantiater.Instantiate(_source[path], position, parent);
-        }
+        public GameObject Instantiate(string path, Vector3 position, Transform parent) => 
+            Object.Instantiate(_source[path], position, Quaternion.identity, parent);
     }
 }

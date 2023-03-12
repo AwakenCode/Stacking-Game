@@ -1,7 +1,8 @@
-﻿using Behavior;
+﻿using Common.Interface;
 using GameplayEntities.Box;
 using GameplayEntities.Interface;
 using Pool;
+using Service;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,14 +10,12 @@ using UnityEngine;
 
 namespace Common
 {
-    public class CollectablesReceiver : MonoBehaviour, ICollectablesReceiver, IComposer
+    public class CollectablesReceiver : MonoBehaviour, ICollectablesReceiver
     {
-        [SerializeField] private Collider _collider;
         [SerializeField] private Transform _stackPoint;
         [SerializeField] private float _jumpPower;
         [SerializeField] private float _receiveDuration;
         [SerializeField] private float _delay;
-        [SerializeField] private Level _level;
 
         private IObjectPool<Box> _boxPool;
         private ITransfer _transfer;
@@ -24,6 +23,12 @@ namespace Common
         public event Action CollectorTriggered;
 
         public bool IsCollectorTriggered { get; private set; } = false;
+
+        private void Awake()
+        {
+            _transfer = TransferFactory.CreateJumpTransfer(_stackPoint, _jumpPower, _receiveDuration);
+            _boxPool = Services.Container.Resolve<BoxPool>();
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -38,12 +43,6 @@ namespace Common
         {
             if (other.TryGetComponent(out ICollectorTransform collector))
                 IsCollectorTriggered = false;
-        }
-
-        public void Compose()
-        {
-            _transfer = new JumpingToTarget(_stackPoint, _jumpPower, _receiveDuration);
-            _boxPool = _level.BoxPool;
         }
 
         public void ReceiveCollectables(Stack<ICollectableTransform> collectableTransforms)

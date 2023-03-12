@@ -1,4 +1,5 @@
-﻿using GameplayEntities.Interface;
+﻿using Common.Interface;
+using GameplayEntities.Interface;
 using System.Collections.Generic;
 
 namespace Character
@@ -10,10 +11,15 @@ namespace Character
 
         private Stack<ICollectableTransform> _collectables = new Stack<ICollectableTransform>();
 
-        public Inventory(ICollectorTransform collector, ICollectablesReceiver collectablesReceiver)
+        public Inventory(ICollectorTransform collector)
         {
             _collector = collector;
+        }
+
+        public void Init(ICollectablesReceiver collectablesReceiver)
+        {
             _collectablesReceiver = collectablesReceiver;
+            Enable();
         }
 
         public void Enable()
