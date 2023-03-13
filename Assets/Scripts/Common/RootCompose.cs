@@ -1,18 +1,21 @@
 ﻿using Common.Interface;
 using UnityEngine;
 
-public class RootCompose : MonoBehaviour, IComposer
+namespace Common
 {
-    [SerializeField, RequireInterface(typeof(IComposer))] Object[] _composersOrder;
-
-    private void Awake()
+    public class RootCompose : MonoBehaviour, IComposer
     {
-        Compose();
-    }
+        [SerializeField, RequireInterface(typeof(IComposer))] Object[] _composersOrder;
 
-    public void Compose()
-    {
-        foreach (IComposer composer in _composersOrder)
-            composer.Compose();
+        private void Awake()
+        {
+            Compose();
+        }
+
+        public void Compose()
+        {
+            foreach (IComposer composer in _composersOrder)
+                composer.Compose();
+        }
     }
 }

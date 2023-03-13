@@ -1,4 +1,5 @@
-﻿using Character;
+﻿using Behavior.Interface;
+using Character;
 using Service;
 
 namespace Infrastructure.Factory

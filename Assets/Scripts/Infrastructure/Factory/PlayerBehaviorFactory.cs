@@ -6,6 +6,7 @@ using Service.UnityContext;
 using StaticData;
 using Infrastructure.Boot;
 using UnityEngine;
+using Behavior.Interface;
 
 namespace Infrastructure.Factory
 {

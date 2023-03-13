@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 
-public interface IMoveable
+namespace Behavior.Interface
 {
-    Vector3 Direction { get; set; }
-    void Move();
+    public interface IMoveable
+    {
+        Vector3 Direction { get; set; }
+        void Move();
+    }
 }

@@ -1,4 +1,6 @@
-﻿using Service.UnityContext;
+﻿using Behavior.Interface;
+using Character;
+using Service.UnityContext;
 using UnityEngine;
 
 namespace Behavior

@@ -1,5 +1,8 @@
-﻿public interface IGravity
+﻿namespace Behavior.Interface
 {
-    float Value { get; set; }
-    void ApplyGravity();
+    public interface IGravity
+    {
+        float Value { get; set; }
+        void ApplyGravity();
+    }
 }

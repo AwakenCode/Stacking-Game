@@ -1,4 +1,7 @@
-﻿public interface IJump
+﻿namespace Behavior.Interface
 {
-    void Jump();
+    public interface IJump
+    {
+        void Jump();
+    }
 }

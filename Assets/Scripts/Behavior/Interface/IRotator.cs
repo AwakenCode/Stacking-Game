@@ -1,4 +1,7 @@
-﻿public interface IRotator
+﻿namespace Behavior.Interface
 {
-    void Rotate();
+    public interface IRotator
+    {
+        void Rotate();
+    }
 }

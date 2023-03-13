@@ -1,4 +1,6 @@
-﻿namespace Behavior
+﻿using Behavior.Interface;
+
+namespace Behavior
 {
     public class NoRotation : IRotator
     {
